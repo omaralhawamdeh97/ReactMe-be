@@ -8,6 +8,7 @@ const { localStrategy } = require("./Middlewares/passport");
 const { jwtStrategy } = require("./Middlewares/passport");
 
 // Routes
+const userRoutes = require("./Routes/userRoutes");
 
 // App uses
 const app = express();
@@ -17,6 +18,9 @@ app.use(passport.initialize());
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 app.use("/media", express.static("media"));
+
+// Routes uses
+app.use(userRoutes);
 
 // Error handling middleware
 app.use((req, res, next) => {
