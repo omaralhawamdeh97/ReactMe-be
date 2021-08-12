@@ -9,6 +9,7 @@ const { jwtStrategy } = require("./Middlewares/passport");
 
 // Routes
 const userRoutes = require("./Routes/userRoutes");
+const postRoutes = require("./Routes/postRoutes");
 
 // App uses
 const app = express();
@@ -21,6 +22,7 @@ app.use("/media", express.static("media"));
 
 // Routes uses
 app.use(userRoutes);
+app.use(postRoutes);
 
 // Error handling middleware
 app.use((req, res, next) => {
