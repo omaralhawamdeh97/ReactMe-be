@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  User.associate = (models) => {
-    User.hasMany(models.Post, { forgienKey: "userId", as: "posts" });
-    models.Post.belongsTo(User, { forgienKey: "userId", as: "posts" });
-  };
+  // User.associate = (models) => {
+  //   User.hasMany(models.Post, { forgienKey: "userId", as: "posts" });
+  //   models.Post.belongsTo(User, { forgienKey: "userId", as: "posts" });
+  // };
 
   return User;
 };

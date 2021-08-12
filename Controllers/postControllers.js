@@ -1,6 +1,11 @@
 const { Post } = require("../db/models");
 
 exports.createPost = async (req, res, next) => {
+  if (req.file) {
+    req.body.video = `http://${req.get("host")}/media/${req.file.filename}`;
+  }
+  console.log(req.body);
+  req.body.userId = req.user.id;
   try {
     const newPost = await Post.create(req.body);
     res.status(201).json(newPost);
