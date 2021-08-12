@@ -13,10 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     email: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
       validate: { isEmail: true },
     },
   });
+
+  User.associate = (models) => {
+    User.hasMany(models.Post, { forgienKey: "userId", as: "posts" });
+    models.Post.belongsTo(User, { forgienKey: "userId", as: "posts" });
+  };
 
   return User;
 };
