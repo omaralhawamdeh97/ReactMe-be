@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Reaction.belongsTo(models.User, {
       foreignKey: "userId",
+      as: "user",
     });
     models.Post.hasMany(Reaction, {
       foreignKey: "postId",

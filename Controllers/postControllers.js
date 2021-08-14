@@ -1,4 +1,4 @@
-const { Post, Reaction } = require("../db/models");
+const { Post, Reaction, User } = require("../db/models");
 
 exports.createPost = async (req, res, next) => {
   if (req.file) {
@@ -20,6 +20,11 @@ exports.getPosts = async (req, res, next) => {
       include: {
         model: Reaction,
         as: "reactions",
+        include: {
+          model: User,
+          as: "user",
+          attributes: { exclude: "password" },
+        },
       },
     });
     res.json(posts);
