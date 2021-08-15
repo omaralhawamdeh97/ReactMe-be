@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { User } = require("../db/models");
+const { User, FriendShip } = require("../db/models");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
 
@@ -31,4 +31,28 @@ const generateToken = (user) => {
   };
   const token = jwt.sign(payload, JWT_SECRET);
   return token;
+};
+
+exports.getFriends = async (req, res, next) => {
+  const foundUser = await User.findOne({
+    where: { id: req.user.id },
+    include: [
+      { model: Friends, as: "from" },
+      { model: Friends, as: "to" },
+    ],
+  });
+  console.log(foundUser.from);
+};
+exports.getPosts = async (req, res, next) => {
+  try {
+    const posts = await User.findAll({
+      include: [
+        { model: FriendShip, as: "from" },
+        { model: FriendShip, as: "to" },
+      ],
+    });
+    res.json(posts);
+  } catch (error) {
+    next(error);
+  }
 };
