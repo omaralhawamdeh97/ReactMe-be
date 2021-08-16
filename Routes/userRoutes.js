@@ -4,7 +4,6 @@ const {
   signup,
   signin,
   getFriends,
-  getPosts,
 } = require("../Controllers/userControllers");
 const upload = require("../Middlewares/multer");
 
@@ -17,10 +16,9 @@ router.post(
 );
 router.post("/signup", signup);
 router.get(
-  "/friends",
+  "/user/friends",
   passport.authenticate("jwt", { session: false }),
   getFriends
 );
-router.get("/users", getPosts);
 
 module.exports = router;
