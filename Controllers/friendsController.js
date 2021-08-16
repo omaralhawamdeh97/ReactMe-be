@@ -1,5 +1,5 @@
 //Model
-const { Friends, User } = require("../db/models");
+const { FriendShip, User } = require("../db/models");
 
 exports.friendsCreate = async (req, res, next) => {
   try {
@@ -8,7 +8,7 @@ exports.friendsCreate = async (req, res, next) => {
     });
     if (foundFriend) {
       req.body.secondUserId = foundFriend.id;
-      const newFriendShip = await Friends.create(req.body);
+      const newFriendShip = await FriendShip.create(req.body);
       res.status(201).json(newFriendShip);
     } else {
       res.json({ message: "Username does not exist" });
@@ -20,7 +20,7 @@ exports.friendsCreate = async (req, res, next) => {
 
 exports.friendsList = async (req, res, next) => {
   try {
-    const friends = await Friends.findAll({
+    const friends = await FriendShip.findAll({
       attributes: { exclude: ["createdAt"] },
     });
     res.json(friends);

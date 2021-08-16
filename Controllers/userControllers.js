@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { User, FriendShip } = require("../db/models");
+const { User, Post, Reaction } = require("../db/models");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../config/keys");
 
@@ -34,24 +34,52 @@ const generateToken = (user) => {
 };
 
 exports.getFriends = async (req, res, next) => {
-  const foundUser = await User.findOne({
-    where: { id: req.user.id },
-    include: [
-      { model: Friends, as: "from" },
-      { model: Friends, as: "to" },
-    ],
-  });
-  console.log(foundUser.from);
-};
-exports.getPosts = async (req, res, next) => {
   try {
-    const posts = await User.findAll({
+    const foundUser = await User.findOne({
+      where: { id: req.user.id },
+      attributes: { exclude: ["password"] },
       include: [
-        { model: FriendShip, as: "from" },
-        { model: FriendShip, as: "to" },
+        {
+          model: User,
+          as: "from",
+          attributes: { exclude: ["password"] },
+          include: {
+            model: Post,
+            as: "posts",
+            include: [
+              {
+                model: User,
+                as: "user",
+                attributes: { exclude: ["password"] },
+              },
+              { model: Reaction, as: "reactions" },
+            ],
+          },
+        },
+        {
+          model: User,
+          as: "to",
+          attributes: { exclude: ["password"] },
+          include: {
+            model: Post,
+            as: "posts",
+            include: [
+              {
+                model: User,
+                as: "user",
+                attributes: { exclude: ["password"] },
+              },
+              { model: Reaction, as: "reactions" },
+            ],
+          },
+        },
       ],
     });
-    res.json(posts);
+    const friends = [
+      ...foundUser.from.map((friend) => friend),
+      ...foundUser.to.map((friend) => friend),
+    ];
+    res.json(friends);
   } catch (error) {
     next(error);
   }
