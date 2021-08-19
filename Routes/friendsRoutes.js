@@ -7,6 +7,7 @@ const router = express.Router();
 const {
   friendsCreate,
   friendsList,
+  friendsSearch,
 } = require("../Controllers/friendsController");
 
 router.post(
@@ -16,4 +17,6 @@ router.post(
 );
 
 router.get("/friends", friendsList);
+router.get("/search/:username", friendsSearch);
+
 module.exports = router;
