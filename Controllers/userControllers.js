@@ -52,7 +52,15 @@ exports.getFriends = async (req, res, next) => {
                 as: "user",
                 attributes: { exclude: ["password"] },
               },
-              { model: Reaction, as: "reactions" },
+              {
+                model: Reaction,
+                as: "reactions",
+                include: {
+                  model: User,
+                  as: "user",
+                  attributes: { exclude: ["password"] },
+                },
+              },
             ],
           },
         },
@@ -69,7 +77,15 @@ exports.getFriends = async (req, res, next) => {
                 as: "user",
                 attributes: { exclude: ["password"] },
               },
-              { model: Reaction, as: "reactions" },
+              {
+                model: Reaction,
+                as: "reactions",
+                include: {
+                  model: User,
+                  as: "user",
+                  attributes: { exclude: ["password"] },
+                },
+              },
             ],
           },
         },
