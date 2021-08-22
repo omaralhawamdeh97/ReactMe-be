@@ -4,7 +4,11 @@ const passport = require("passport");
 const upload = require("../Middlewares/multer");
 
 //Controllers
-const { createPost, getPosts } = require("../Controllers/postControllers");
+const {
+  createPost,
+  getPosts,
+  getPublicPosts,
+} = require("../Controllers/postControllers");
 
 const router = express.Router();
 router.post(
@@ -20,4 +24,5 @@ router.get(
   getPosts
 );
 
+router.get("/posts/:page/public", getPublicPosts);
 module.exports = router;

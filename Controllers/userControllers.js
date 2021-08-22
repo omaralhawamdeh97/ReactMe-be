@@ -28,6 +28,7 @@ const generateToken = (user) => {
     exp: Date.now() + JWT_EXPIRATION_MS,
     image: user.image,
     email: user.email,
+    isPublic: user.isPublic,
   };
   const token = jwt.sign(payload, JWT_SECRET);
   return token;
@@ -96,6 +97,18 @@ exports.getFriends = async (req, res, next) => {
       ...foundUser.to.map((friend) => friend),
     ];
     res.json(friends);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.goPublic = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ where: { id: req.user.id } });
+    user.update(req.body);
+    console.log(user);
+    const token = generateToken(user);
+    res.status(201).json({ token });
   } catch (error) {
     next(error);
   }
